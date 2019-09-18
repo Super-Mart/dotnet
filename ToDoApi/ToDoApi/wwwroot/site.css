@@ -1,0 +1,65 @@
+﻿* {
+    box-sizing: border-box;
+}
+body {
+    padding: 25px;
+    font-family: 'Oswald', sans-serif;
+    background-color: black;
+}
+h1 {
+    font-family: 'Anton', sans-serif;
+    color: white;
+}
+h3 {
+    color: white;
+}
+#counter {
+    color: white;
+}
+/*CSS for the add input text and add button*/
+.add-todo{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.form-control {
+    width: 25%;
+    margin-right: 10px;
+}
+/*CSS for the edit portion of form*/
+.my-form {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+.form-check-input {
+ 
+}
+.xmark-uni {
+    margin: 6px 0 0 5px;
+}
+
+
+input[type='submit'], button, [aria-label] {
+    cursor: pointer;
+}
+
+#spoiler {
+    display: none;
+}
+
+table {    
+    color: white;
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #424242;
+    color: white;
+}
+
+td {
+    border: 1px solid;
+    padding: 5px;
+}
