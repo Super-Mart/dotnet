@@ -1,0 +1,93 @@
+﻿@page
+@model MyMovies.Pages.Movies.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MyLDSMovies - Home</title>
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <h2>Movie list</h2>
+    </div>
+
+    <form>
+        <div class="form-group row">
+            <label for="releaseDate" class="col-sm-1 col-form-label">Release Date:</label>
+            <div class="col-sm-10">
+                <select class="form-control genreDropdown" asp-for="MRD" asp-items="Model.RD">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="title" class="col-sm-1 col-form-label">Title:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control genreDropdown" asp-for="SearchString" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"></label>
+            <input type="submit" value="Filter" class="btn btn-outline-dark btn-sm col-sm-2" />
+        </div>
+    </form>
+    <br />
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie[0].ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie[0].Genre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie[0].Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Movie[0].Rating)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movie)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ID" class="btn btn-outline-primary btn-sm">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ID" class="btn btn-outline-warning btn-sm">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ID" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <a asp-page="Create" class="btn btn-outline-primary">Create New</a>
+    </div>
+</body>
+</html>
