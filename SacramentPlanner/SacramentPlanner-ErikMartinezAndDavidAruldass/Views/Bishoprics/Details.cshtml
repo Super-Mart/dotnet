@@ -1,0 +1,30 @@
+﻿@model SacramentPlanner_ErikMartinezAndDavidAruldass.Models.Bishopric
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Bishopric</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BishopricName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BishopricName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Released)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Released)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.BishopricId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

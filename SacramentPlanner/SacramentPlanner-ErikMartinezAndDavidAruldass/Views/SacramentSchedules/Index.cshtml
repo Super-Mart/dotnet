@@ -1,0 +1,107 @@
+﻿@model IEnumerable<SacramentPlanner_ErikMartinezAndDavidAruldass.Models.SacramentSchedule>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Sacrament Program</h1>
+
+<p>
+    <a asp-action="Create">Create a new sacrament planner</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Meeting Date")
+                @*@Html.DisplayNameFor(model => model.MeetingDate)*@
+            </th>
+            <th>
+                @Html.DisplayName("Presiding")
+                @*@Html.DisplayNameFor(model => model.Bishopric)*@
+            </th>
+            <th>
+                @Html.DisplayName("Opening Hymn")
+                @*@Html.DisplayNameFor(model => model.OpeningHymn)*@
+            </th>
+            <th>
+                @Html.DisplayName("Invocation")
+                @* @Html.DisplayNameFor(model => model.InvocationId)*@
+            </th>
+            <th>
+                @Html.DisplayName("Sacrament Hymn")
+                @*@Html.DisplayNameFor(model => model.SacramentalHymn)*@
+            </th>
+            <th>
+                @Html.DisplayName("First Speaker")
+                @*@Html.DisplayNameFor(model => model.FirstSpeakerId)*@
+            </th>
+            <th>
+                @Html.DisplayName("Second Speaker (if any)")
+                @*@Html.DisplayNameFor(model => model.SecondSpeakerId)*@
+            </th>
+            <th>
+                @Html.DisplayName("Intermediate Hymn (if any)")
+                @*@Html.DisplayNameFor(model => model.IntermediateHymn)*@
+            </th>
+            <th>
+                @Html.DisplayName("Third Speaker")
+                @*@Html.DisplayNameFor(model => model.ThirdSpeakerId)*@
+            </th>
+            <th>
+                @Html.DisplayName("Closing Hymn")
+                @*@Html.DisplayNameFor(model => model.ClosingHymn)*@
+            </th>
+            <th>
+                @Html.DisplayName("Benediction")
+                @*@Html.DisplayNameFor(model => model.BenedictionId)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bishopric.BishopricName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpeningHymn.HymnName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Invocation.MemberName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SacramentalHymn.HymnName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpeningSpeaker.Member.MemberName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntermediateSpeaker.Member.MemberName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntermediateHymn.HymnName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClosingSpeaker.Member.MemberName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClosingHymn.HymnName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Benediction.MemberName)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SacramentScheduleId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SacramentScheduleId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SacramentScheduleId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

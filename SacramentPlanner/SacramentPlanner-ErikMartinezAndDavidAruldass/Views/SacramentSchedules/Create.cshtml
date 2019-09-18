@@ -1,0 +1,114 @@
+﻿@model SacramentPlanner_ErikMartinezAndDavidAruldass.Models.SacramentSchedule
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Sacrament Schedule</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MeetingDate" class="control-label"></label>
+                <input asp-for="MeetingDate" class="form-control" />
+                <span asp-validation-for="MeetingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BishopricId" class="control-label"></label>
+                <select asp-for="BishopricId" class="form-control" asp-items="ViewBag.BishopricId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningHymnId" class="control-label"></label>
+                <select asp-for="OpeningHymnId" class="form-control" asp-items="ViewBag.OpeningHymnId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvocationId" class="control-label"></label>
+                <select asp-for="InvocationId" class="form-control" asp-items="ViewBag.InvocationId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SacramentalHymnId" class="control-label"></label>
+                <select asp-for="SacramentalHymnId" class="form-control" asp-items="ViewBag.SacramentalHymnId">
+
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningSpeakerId" class="control-label"></label>
+                <select asp-for="OpeningSpeakerId" class="form-control" asp-items="ViewBag.OpeningSpeakerId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IntermediateSpeakerId" class="control-label"></label>
+                <select asp-for="IntermediateSpeakerId" class="form-control" asp-items="ViewBag.IntermediateSpeakerId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IntermediateHymnId" class="control-label"></label>
+                <select asp-for="IntermediateHymnId" class="form-control" asp-items="ViewBag.IntermediateHymnId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingSpeakerId" class="control-label"></label>
+                <select asp-for="ClosingSpeakerId" class="form-control" asp-items="ViewBag.ClosingSpeakerId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingHymnId" class="control-label"></label>
+                <select asp-for="ClosingHymnId" class="form-control" asp-items="ViewBag.ClosingHymnId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BenedictionId" class="control-label"></label>
+                <select asp-for="BenedictionId" class="form-control" asp-items="ViewBag.BenedictionId">
+                    <option selected="selected">
+                        ...
+                    </option>
+                </select>
+            </div>           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

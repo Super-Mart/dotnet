@@ -1,0 +1,85 @@
+﻿@model SacramentPlanner_ErikMartinezAndDavidAruldass.Models.SacramentSchedule
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Sacrament Schedule</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SacramentScheduleId" />
+            <div class="form-group">
+                <label asp-for="MeetingDate" class="control-label"></label>
+                <input asp-for="MeetingDate" class="form-control" />
+                <span asp-validation-for="MeetingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BishopricId" class="control-label"></label>
+                <select asp-for="BishopricId" class="form-control" asp-items="ViewBag.BishopricId"></select>
+                <span asp-validation-for="BishopricId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningHymnId" class="control-label"></label>
+                <select asp-for="OpeningHymn.HymnName" class="form-control" asp-items="ViewBag.OpeningHymnId"></select>
+                <span asp-validation-for="OpeningHymnId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvocationId" class="control-label"></label>
+                <select asp-for="Invocation.MemberName" class="form-control" asp-items="ViewBag.InvocationId"></select>
+                <span asp-validation-for="InvocationId" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="SacramentalHymnId" class="control-label"></label>
+                <select asp-for="SacramentalHymn.HymnName" class="form-control" asp-items="ViewBag.SacramentalHymnId"></select>
+                <span asp-validation-for="SacramentalHymnId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningSpeakerId" class="control-label"></label>
+                <select asp-for="OpeningSpeaker.Member" class="form-control" asp-items="ViewBag.OpeningSpeakerId"></select>
+                <span asp-validation-for="OpeningSpeakerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IntermediateSpeakerId" class="control-label"></label>
+                <select asp-for="IntermediateSpeaker.Member.MemberName" class="form-control" asp-items="ViewBag.IntermediateSpeakerId"></select>
+                <span asp-validation-for="IntermediateSpeakerId" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="IntermediateHymnId" class="control-label"></label>
+                <select asp-for="IntermediateHymnId" class="form-control" asp-items="ViewBag.IntermediateHymnId"></select>
+                <span asp-validation-for="IntermediateHymnId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClosingSpeakerId" class="control-label"></label>
+                <input asp-for="ClosingSpeakerId" class="form-control" />
+                <span asp-validation-for="ClosingSpeakerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingHymnId" class="control-label"></label>
+                <select asp-for="ClosingHymnId" class="form-control" asp-items="ViewBag.ClosingHymnId"></select>
+                <span asp-validation-for="ClosingHymnId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BenedictionId" class="control-label"></label>
+                <input asp-for="BenedictionId" class="form-control" />
+                <span asp-validation-for="BenedictionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

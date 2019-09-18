@@ -1,0 +1,86 @@
+﻿@model SacramentPlanner_ErikMartinezAndDavidAruldass.Models.SacramentSchedule
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SacramentSchedule</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayName("Meeting Date")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MeetingDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Presiding")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bishopric.BishopricName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Opening Hymn")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OpeningHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Invocation")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Invocation.MemberName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Sacrament Hymn")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SacramentalHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("First Speaker")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OpeningSpeaker.Member.MemberName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Second Speaker(if any)")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IntermediateSpeaker.Member.MemberName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Intermediate Hymn (if any)")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IntermediateHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Third Speaker")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClosingSpeaker.Member.MemberName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayName("Closing Hymn")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClosingHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Benediction")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Benediction.MemberName)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.SacramentScheduleId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

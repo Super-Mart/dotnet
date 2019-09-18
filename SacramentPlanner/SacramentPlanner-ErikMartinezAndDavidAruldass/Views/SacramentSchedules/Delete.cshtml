@@ -1,0 +1,90 @@
+﻿@model SacramentPlanner_ErikMartinezAndDavidAruldass.Models.SacramentSchedule
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Sacrament Schedule</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayName("Meeting Date")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MeetingDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Presiding")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bishopric.BishopricName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Opening Hymn")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OpeningHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Invocation")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Invocation.MemberName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Sacrament Hymn")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SacramentalHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("First Speaker")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OpeningSpeaker.Member.MemberName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Second Speaker(if any)")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IntermediateSpeaker.Member.MemberName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Intermediate Hymn (if any)")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IntermediateHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Third Speaker")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClosingSpeaker.Member.MemberName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayName("Closing Hymn")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClosingHymn.HymnName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Benediction")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Benediction.MemberName)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="SacramentScheduleId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
