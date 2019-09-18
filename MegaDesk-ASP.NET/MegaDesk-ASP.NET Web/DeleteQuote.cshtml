@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    //var quote = "~/DeskQuote.cs";
+
+    //open database
+    var db = Database.Open("MegaDeskQoute");
+
+    //Select data/values from the shipping table
+    var shippingData = db.Query("SELECT * FROM Shipping");
+    //Select data/values from the surface material table
+    var surfaceMaterialData = db.Query("SELECT * FROM SurfaceMaterial");
+
+    var deskQuoteId = 0;
+    var deskId = 0;
+    var date = "";
+    string customerName = "";
+    var width = "";
+    var depth = "";
+    var drawers = "";
+    string surfaceMaterial = "";
+    //string surfaceMaterialName = "";
+    string rushOrder = "";
+    //string rushOrdername = "";
+    var orderTotal = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["id"].IsEmpty()) // && Request.QueryString["id"].IsInt())
+        {
+            deskQuoteId = int.Parse(Request.QueryString["id"]);
+            var dbCommand = @"SELECT o.DeskQuoteId, o.Date, o.CustomerName, d.Width, d.Depth,
+                               d.Drawers, s.DeliveryType, sf.SurfaceMaterial, o.OrderAmount
+                        FROM DeskQuote o
+                        LEFT JOIN Desk d ON
+                            d.DeskId = o.DeskId
+                        LEFT JOIN Shipping s ON
+                            s.ShippingId = o.ShippingId
+                        LEFT JOIN SurfaceMaterial sf ON
+                            sf.SurfaceMaterialId = d.SurfaceMaterialId
+                        WHERE o.DeskQuoteId = @0";
+            var od = db.QuerySingle(dbCommand, deskQuoteId);
+
+            //deskId = Convert.ToString(od.DeskId);
+            //var dbCommand2 = "SELECT * FROM Desk WHERE DeskId = @0";
+            //var dd = db.QuerySingle(dbCommand2, deskId);
+
+            if (od != null)
+            {
+                date = od.Date.ToString();
+                customerName = od.CustomerName;
+                width = od.Width.ToString();
+                depth = od.Depth.ToString();
+                drawers = od.Drawers.ToString();
+                surfaceMaterial = od.SurfaceMaterial;
+                rushOrder = od.DeliveryType.ToString();
+                orderTotal = od.OrderAmount.ToString();
+            }
+            else
+            {
+                Validation.AddFormError("Not working.");
+            }
+        }
+        else
+        {
+            Validation.AddFormError("No quote has been selected.");
+
+        }
+    }
+    if (IsPost && !Request["buttonDelete"].IsEmpty())
+    {
+
+        //customerName = Request.Form["customerName"];
+        //width = int.Parse(Request.Form["width"]);
+        //depth = int.Parse(Request.Form["depth"]);
+        //drawers = int.Parse(Request.Form["drawers"]);
+        //surfaceMaterialId = Convert.ToInt32(Request.Form["surfaceMaterialId"]);
+        //rushOrderId = Convert.ToInt32(Request.Form["rushOrderId"]);
+        //orderTotal = Convert.ToInt32(Request.Form["orderTotal"]);        
+
+        deskQuoteId = int.Parse(Request.Form["DeskQuoteId"]);
+        deskId = int.Parse(Request.Form["DeskId"]);
+
+        var deleteCommand = "DELETE FROM DeskQuote WHERE DeskQuoteId = @0";
+        db.Execute(deleteCommand, deskQuoteId);
+        var deleteCommand2 = "DELETE FROM Desk WHERE DeskId = @0";
+        db.Execute(deleteCommand2, deskId);
+
+        //var updateDesk = "UPDATE Desk SET Width=@0, Depth=@1, Drawers=@2, SurfaceMaterialId=@3 WHERE Id=@4";
+        //db.Execute(updateDesk, width, depth, drawers, surfaceMaterialId);
+        //var dId = db.GetLastInsertId();
+        //var updateOrder = "UPDATE [Order] SET CustomerName=@0, DeskId=@1, ShippingId=@2, Date=@3, OrderAmount=@4 WHERE Id=@5";
+        //db.Execute(updateOrder, customerName, dId, rushOrderId, date, orderTotal);
+
+        Response.Redirect("~/ViewAllQuotes");
+
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MegaDesk</title>
+</head>
+@Html.ValidationSummary()
+<body>
+
+    <form method="post">
+        <fieldset>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <span class="form-control">@date</span>
+            </div>
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <span class="form-control">@customerName</span>
+            </div>
+            <div class="form-group">
+                <label for="width">Width</label>
+                <span class="form-control inputtext">@width</span>
+            </div>
+            <div class="form-group">
+                <label for="depth">Depth</label>
+                <span class="form-control">@depth</span>
+            </div>
+            <div class="form-group">
+                <label for="drawers">Drawers</label>
+                <span class="form-control">@drawers</span>
+            </div>
+            <div class="form-group">
+                <label for="surfaceMaterialName">Surface Material</label>
+                <span class="form-control">@surfaceMaterial</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="rushOrdername">Delivery</label>
+                <span class="form-control">@rushOrder</span>
+            </div>
+            <div class="form-group">
+                <label for="orderTotal">Order Total</label>
+                <span class="form-control">@orderTotal</span>
+            </div>
+
+            <input type="hidden" name="deskQuoteId" value="@deskQuoteId" />
+            <input type="hidden" name="deskId" value="@deskId" />
+
+            <div class="text-right">
+                <a class="btn btn-secondary add-btn" href="~/ViewAllQuotes">Cancel</a>
+                <button class="btn btn-danger" type="submit" name="buttonDelete" id="buttonDelete" value="Delete Quote">Delete Quote</button>
+            </div>
+        </fieldset>
+    </form>
+</body>
+</html>

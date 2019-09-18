@@ -1,0 +1,129 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    //var quote = "~/DeskQuote.cs";
+
+    //open database
+    var db = Database.Open("MegaDeskQoute");
+
+    //Select data/values from the shipping table
+    var shippingData = db.Query("SELECT * FROM Shipping");
+
+    //Select data/values from the surface material table
+    var surfaceMaterialData = db.Query("SELECT * FROM SurfaceMaterial");
+
+    string customerName = "";
+    int width;
+    int depth;
+    int drawers;
+    int surfaceMaterialId;
+    int rushOrderId;
+    decimal orderTotal = 0;
+
+    Validation.RequireField("customerName", "Please enter a valid name");
+    Validation.RequireField("width", "A width is required");
+    Validation.RequireField("depth", "A depth is required");
+    Validation.RequireField("drawers", "Number of drawers is required");
+    //Validation.RequireField("surfaceMaterial", "No surface material has been selected");
+    //Validation.RequireField("rushOrder", "Please specify perferred delivery");
+
+    if (IsPost)
+    {
+        if (Validation.IsValid())
+        {
+            //Response.Write(Request.Form);
+            //return;
+
+            customerName = Request.Form["customerName"];
+            width = int.Parse(Request.Form["width"]);
+            depth = int.Parse(Request.Form["depth"]);
+            drawers = int.Parse(Request.Form["drawers"]);
+            surfaceMaterialId = Convert.ToInt32(Request.Form["surfaceMaterialId"]);
+            rushOrderId = Convert.ToInt32(Request.Form["rushOrderId"]);
+            orderTotal = 5;
+            
+
+            //This will insert the values of width, depth, drawers, and surface material into the desk table
+            var insertDeskData = "INSERT INTO Desk (Width, Depth, Drawers, SurfaceMaterialId) Values(@0, @1, @2, @3)";
+            db.Execute(insertDeskData, width, depth, drawers, surfaceMaterialId);
+
+            // TODO: insert into Order
+            // NOTE: use DeskId that got generated on insert of Desk record above
+
+            var deskId = db.GetLastInsertId();
+
+            var insertOrder = "INSERT INTO DeskQuote (CustomerName, DeskId, ShippingId, OrderAmount) Values(@0, @1, @2, @3)";
+            db.Execute(insertOrder, customerName, deskId, rushOrderId, orderTotal);
+
+            
+            Response.Redirect("~/ViewAllQuotes");
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MegaDesk - Add Quote</title>
+</head>
+<body>
+    @Html.ValidationSummary()
+    <form method="post">
+        <fieldset>
+            <div class="form-group">
+                <label for="customerName">Name</label>
+                <input type="text" name="customerName" value="@Request.Form["customerName"]" />
+                @Html.ValidationMessage("customerName")
+            </div>
+            <div class="form-group">
+                <label for="width">Width</label>
+                <input type="number" name="width" value="@Request.Form["width"]" />
+                @Html.ValidationMessage("width")
+            </div>
+            <div class="form-group">
+                <label for="depth">Depth</label>
+                <input type="number" name="depth" value="@Request.Form["depth"]" />
+                @Html.ValidationMessage("depth")
+            </div>
+            <div class="form-group">
+                <label for="drawers">Drawers</label>
+                <input type="number" name="drawers" value="@Request.Form["drawers"]" />
+                @Html.ValidationMessage("drawers")
+            </div>
+            <div class="form-group">
+                <label for="surfaceMaterial">Surface Material</label>
+                <select name="surfaceMaterialId" value="@Request.Form["surfaceMaterialId"]">
+
+                    @foreach (var smtype in surfaceMaterialData)
+                    {
+                        <option value="@smtype.surfaceMaterialId">
+                            @smtype.SurfaceMaterial
+                        </option>
+                        @Html.ValidationMessage("surfaceMaterial")
+                    }
+
+                </select>               
+            </div>
+
+            <div class="form-group">
+                <label for="rushOrder">Delivery</label>
+                <select name="rushOrderId" value="@Request.Form["rushOrderId"]">
+
+                    @foreach (var deliverytype in shippingData)
+                    {
+                        <option value="@deliverytype.shippingId">
+                            @deliverytype.DeliveryType
+                        </option>
+                        @Html.ValidationMessage("rushOrder")
+                    }
+
+                </select>                
+            </div>
+
+            <div class="text-right">
+                <a class="btn btn-secondary add-btn" href="~/Index.cshtml">Cancel</a>
+                <button class="btn btn-success" type="submit" name="buttonSubmit" value="Add Quote">Add Quote</button>
+            </div>
+        </fieldset>
+    </form>
+</body>
+</html>

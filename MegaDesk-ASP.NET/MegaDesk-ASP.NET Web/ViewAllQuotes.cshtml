@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    var db = Database.Open("MegaDeskQoute");
+    var selectOrder = @"SELECT o.DeskQuoteId, o.Date, o.CustomerName, d.Width, d.Depth,
+                               d.Drawers, s.DeliveryType, sf.SurfaceMaterial, o.OrderAmount
+                        FROM DeskQuote o                        
+                        LEFT JOIN Desk d ON
+                            d.DeskId = o.DeskId
+                        LEFT JOIN Shipping s ON
+                            s.ShippingId = o.ShippingId
+                        LEFT JOIN SurfaceMaterial sf ON
+                            sf.SurfaceMaterialId = d.SurfaceMaterialId";
+    //LEFT JOIN Customer c ON
+    //o.CustomerId = c.CustomerId
+    var selectedData = db.Query(selectOrder);
+    var grid = new WebGrid(source: selectedData);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MegaDesk</title>
+</head>
+<body>
+    <main>
+        @grid.GetHtml(
+        tableStyle: "table table-sm",
+        headerStyle: "head",
+        alternatingRowStyle: "alt",
+        columns: grid.Columns(
+        grid.Column("CustomerName", header:"Customer Name"),
+             grid.Column("Date", format: @<text>@item.Date.ToString("MM/dd/yyyy")</text>),
+                     grid.Column("Width"),
+                     grid.Column("Depth"),
+                     grid.Column("Drawers"),
+                     grid.Column("DeliveryType", header: "Selected Delivery"),
+                     grid.Column("SurfaceMaterial", header: "Surface Material"),
+                     grid.Column("OrderAmount", header: "Order Amount"),
+                     grid.Column(format: @<a href="~/EditQuote?id=@item.DeskQuoteId">Edit</a>),
+                     grid.Column(format: @<a href="~/DeleteQuote?id=@item.DeskQuoteId">Delete</a>)
+        )
+        )
+    </main>
+</body>
+</html>

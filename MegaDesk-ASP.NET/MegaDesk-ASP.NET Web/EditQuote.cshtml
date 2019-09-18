@@ -1,0 +1,177 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    //var quote = "~/DeskQuote.cs";
+
+    //open database
+    var db = Database.Open("MegaDeskQoute");
+
+    //Select data/values from the shipping table
+    var shippingData = db.Query("SELECT * FROM Shipping");
+
+    //Select data/values from the surface material table
+    var surfaceMaterialData = db.Query("SELECT * FROM SurfaceMaterial");
+
+   
+
+    var deskQuoteId = "";
+    var deskId = "";
+    DateTime date = DateTime.Now;
+    string customerName = "";
+    int width = 0;
+    int depth = 0;
+    int drawers = 0;
+    int surfaceMaterialId = 0;
+    //string surfaceMaterialName = "";
+    int rushOrderId = 0;
+    //string rushOrdername = "";
+    decimal orderTotal;
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["id"].IsEmpty() && Request.QueryString["id"].IsInt())
+        {
+            deskQuoteId = Request.QueryString["id"];
+            var dbCommand = "SELECT * FROM DeskQuote WHERE DeskQuoteId = @0";
+            var dq = db.QuerySingle(dbCommand, deskQuoteId);
+
+            deskId = Convert.ToString(dq.DeskId);
+            var dbCommand2 = "SELECT * FROM Desk WHERE DeskId = @0";
+            var dd = db.QuerySingle(dbCommand2, deskId);
+
+            if (dq != null)
+            {
+                date = dq.Date;
+                customerName = dq.CustomerName;
+                width = dd.Width;
+                depth = dd.Depth;
+                drawers = dd.Drawers;
+                surfaceMaterialId = dd.SurfaceMaterialId;
+                rushOrderId = dq.ShippingId;
+                orderTotal = dq.OrderAmount;
+            }
+            else
+            {
+                Validation.AddFormError("Not working.");
+            }
+        }
+        else
+        {
+            Validation.AddFormError("No quote has been selected.");
+        }
+    }
+    if (IsPost && Validation.IsValid())
+    {
+        deskQuoteId = Request.Form["deskQuoteId"];
+        deskId = Request.Form["deskId"];
+
+        customerName = Request.Form["customerName"];
+        width = int.Parse(Request.Form["width"]);
+        depth = int.Parse(Request.Form["depth"]);
+        drawers = int.Parse(Request.Form["drawers"]);
+        surfaceMaterialId = Convert.ToInt32(Request.Form["surfaceMaterialId"]);
+        rushOrderId = Convert.ToInt32(Request.Form["rushOrderId"]);
+        orderTotal = Convert.ToInt32(Request.Form["orderTotal"]);
+
+
+        var updateDesk = "UPDATE Desk SET Width=@0, Depth=@1, Drawers=@2, SurfaceMaterialId=@3 WHERE DeskId=@4";
+        db.Execute(updateDesk, width, depth, drawers, surfaceMaterialId, deskId);
+
+        // var dId = db.GetLastInsertId();
+        var updateOrder = "UPDATE DeskQuote SET CustomerName=@0, ShippingId=@1, OrderAmount=@2 WHERE DeskQuoteId=@3";
+        db.Execute(updateOrder, customerName, rushOrderId, orderTotal, deskQuoteId);
+
+        Response.Redirect("~/ViewAllQuotes");
+
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MegaDesk</title>
+</head>
+@Html.ValidationSummary()
+<body>
+    <form method="post">
+        <fieldset>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <span>@date.ToShortDateString()</span>
+                @*<input class="form-control" type="text" name="date" value="@date.ToShortDateString()" />*@
+            </div>
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input class="form-control" type="text" name="customerName" value="@customerName" />
+            </div>
+            <div class="form-group">
+                <label for="width">Width</label>
+                <input class="form-control" type="text" name="width" value="@width" />
+            </div>
+            <div class="form-group">
+                <label for="depth">Depth</label>
+                <input class="form-control" type="text" name="depth" value="@depth" />
+            </div>
+            <div class="form-group">
+                <label for="drawers">Drawers</label>
+                <input pattern="[1-7]{1}" title="Please enter number 1 to 7" class="form-control" type="text" name="drawers" value="@drawers" />
+            </div>
+            <div class="form-group">
+                <label for="surfaceMaterial">Surface Material</label>
+                <select name="surfaceMaterialId" value="@Request.Form["surfaceMaterialId"]">
+
+                    @foreach (var surfaceMaterialType in surfaceMaterialData)
+                    {
+                        if (surfaceMaterialType.surfaceMaterialId == surfaceMaterialId)
+                        {
+                            <option value="@surfaceMaterialType.surfaceMaterialId">
+                                @Convert.ToString(surfaceMaterialType.SurfaceMaterial)
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@surfaceMaterialType.surfaceMaterialId">
+                                @surfaceMaterialType.SurfaceMaterial
+                            </option>
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rushOrderName">Rush order type</label>
+                <select name="rushOrderId" value="@Request.Form["rushOrderId"]">
+
+                    @foreach (var order in shippingData)
+                    {
+                        if (order.DeliveryType == @Request.Form["rushOrderId"])
+                        {
+                            <option value="@order.rushOrderId">
+                                @Convert.ToString(order.DeliveryType)
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@order.DeliveryType">
+                                @order.DeliveryType
+                            </option>
+                        }
+                    }
+
+                </select>
+            </div>
+            @*<div class="form-group">
+                <label for="rushOrderName">RushOrder Name</label>
+                <input class="form-control" type="text" name="rushOrderId" value="@rushOrderId" />
+            </div>*@
+            <input type="hidden" name="deskQuoteId" value="@deskQuoteId" />
+            <input type="hidden" name="deskId" value="@deskId" />
+            <div class="text-right">
+                <a class="btn btn-secondary add-btn" href="~/ViewAllQuotes">Cancel</a>
+                <button class="btn btn-success" type="submit" name="buttonSubmit" value="Submit Changes">Submit Changes</button>
+            </div>
+        </fieldset>
+    </form>
+</body>
+</html>
