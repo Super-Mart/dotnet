@@ -1,0 +1,62 @@
+﻿body, .table {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: black;
+}
+/*Nav css*/
+nav {
+    background-color: black;
+    margin-bottom: 3px;
+}
+.container a {
+    color: white;
+}
+#yellow:hover, 
+#yellow.active:hover, 
+#yellow2:hover, 
+#yellow2.active:hover {
+    color: yellow;
+}
+#green:hover,
+#green.active:hover, 
+#green2:hover, 
+#green2.active:hover {
+    color: green;
+}
+#blue:hover, #blue.active:hover {
+    color: blue;
+}
+#red:hover, #red.active:hover {
+    color: red;
+}
+
+.navbar-nav li .active {
+    color: red;
+}
+/*Main page css*/
+.homeH1 {
+    background-image: url(../images/eatsleepcode.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: black;
+    border-radius: 5px;
+}
+@media only screen and (min-width: 575px) and (max-width: 995px) {
+    .homeH1 {
+        background-image: url(../images/eatsleepcodemd.jpg);
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+}
+
+
+.homeH1 h1 {
+    font-family: 'Cinzel', serif;
+    color: white;
+}
+
+.homeCodeImg img{
+    height: 300px;
+    width: 100%;
+    border-radius: 5px;
+}
