@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    var db = Database.Open("WebPagesScriptures");
+    var selectCommand = "SELECT * FROM Scriptures";
+    var searchTerm = "";
+
+    if (!Request.QueryString["searchBook"].IsEmpty())
+    {
+        selectCommand = "SELECT * FROM Scriptures WHERE Book LIKE @0";
+        searchTerm = "%" + Request.QueryString["searchBook"] + "%";
+    }
+
+    if (!Request.QueryString["searchDate"].IsEmpty())
+    {
+        selectCommand = "SELECT * FROM Scriptures WHERE Date LIKE @0";
+        searchTerm = "%" + Request["searchDate"] + "%";
+    }
+
+    var selectedData = db.Query(selectCommand, searchTerm);
+    var grid = new WebGrid(source: selectedData, defaultSort: "Book", rowsPerPage: 5);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>My Scriptures</title>
+</head>
+<body class="container-fluid">
+    <header class="jumbotron jumbotron-fluid my-jumbtron">
+        <div class="container">
+            <h1 class="display-4">My Scriptures</h1>
+        </div>
+    </header>
+    <form method="get">
+        <div class="form-items">
+            <label for="searchBook">Book to look for:</label>
+            <input type="text" name="searchBook" value="@Request.QueryString["searchBook"]" />
+            <button type="Submit" value="Search Book" class="btn btn-secondary btn-sm">Search</button>
+            <br /><p>(Leave blank to list all Books.)</p>
+
+            <label for="SearchDate">Search by date:</label>
+            <input type="text" name="SearchDate" value="@Request.QueryString["searchDate"]" />
+            <button type="Submit" value="Search Date" class="btn btn-secondary btn-sm">Search</button>
+        </div>
+        <br />
+    </form>
+    <main class="">
+        @grid.GetHtml(
+         tableStyle: "table table-striped table-md",
+         headerStyle: "head",
+         alternatingRowStyle: "alt",
+         columns: grid.Columns(
+                      //grid.Column("Date"),
+                      grid.Column("Date", header:"Date", format: @<text>@item.Date.ToString("MM-dd-yyyy")</text>),
+
+                          grid.Column("Book"),
+                          grid.Column("SubBook"),
+                          grid.Column("Chapter"),
+                          grid.Column("Verse"),
+                          grid.Column("Notes"),
+                          grid.Column(format: @<a href="~/Edit?id=@item.ID">Edit</a>),
+                                     grid.Column(format: @<a href="~/Delete?id=@item.ID">Delete</a>)))
+        <a class="btn btn-secondary add-btn" href="~/Add">Add new Scripture</a>
+    </main>
+</body>
+</html>

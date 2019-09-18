@@ -1,0 +1,41 @@
+﻿body {
+    font-family: 'Raleway', sans-serif;
+}
+
+/*Container-fluid*/
+
+/*Heading*/
+.my-jumbtron {
+    font-family: 'Bree Serif', serif;
+    background-color: #fff;
+    text-align: center;
+}
+
+/*CSS for validation*/
+.field-validation-error {
+    font-weight: bold;   
+    color: red;
+}
+
+.validation-summary-errors {
+    border: 2px solid red;
+    color: red;   
+    font-weight: bold;
+    margin: 12px;
+}
+
+.form-box {
+    width: 50%;
+    margin: auto;
+}
+
+/*Grid container*/
+/*.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+*/
+
+/*Media Query*/
+@media only screen and (min-width: 950px) {
+}
